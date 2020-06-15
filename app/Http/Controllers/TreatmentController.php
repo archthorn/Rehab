@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Models\Treatment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class TreatmentController extends Controller
 {    
@@ -56,5 +57,26 @@ class TreatmentController extends Controller
         $treatment->save();
 
         return redirect()->back();
+    }
+
+    public function exportTreatment($id){
+        $treatment = Treatment::find($id);
+        
+        $tmpProcessor = new TemplateProcessor('word_templates/treatment.docx');
+        $tmpProcessor->setValue('id', $treatment->id);
+        $tmpProcessor->setValue('doctor', $treatment->patient->doctor->getFullName());
+        $tmpProcessor->setValue('patient', $treatment->patient->getFullName());
+        $tmpProcessor->setValue('diagnosis', $treatment->patient->diagnosis->name);
+        $tmpProcessor->setValue('course', $treatment->course->prescription);
+        $tmpProcessor->setValue('status', $treatment->status);
+        $tmpProcessor->setValue('passed_days', $treatment->passed_days);
+        $tmpProcessor->setValue('term', $treatment->course->term);
+        $tmpProcessor->setValue('results', $treatment->results);
+        $tmpProcessor->setValue('re_taking', $treatment->re_taking ? 'потребує' : 'не потребує');
+
+        $fileName = 'Курс №'.$treatment->id.'.docx';
+        $tmpProcessor->saveAs($fileName);
+
+        return response()->download($fileName)->deleteFileAfterSend(true);
     }
 }

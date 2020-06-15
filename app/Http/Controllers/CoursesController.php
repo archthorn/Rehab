@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Course;
-use App\Http\Models\Treatment;
 use Illuminate\Http\Request;
 
 class CoursesController extends Controller
@@ -34,5 +33,20 @@ class CoursesController extends Controller
         $course->save();
 
         return redirect()->route('courses');
+    }
+
+    public function statistics(){
+        $courses = Course::orderBy('prescription', 'asc')->get();
+
+        foreach($courses as $course){
+            $active[] = $course->activeCourses()->count();
+            $passed[] = $course->passedCourses()->count();
+            $interrupted[] = $course->interruptedCourses()->count();
+            $lables[] = $course->prescription;
+        }
+        
+        $data = ['active' => $active, 'passed' => $passed, 'interrupted' => $interrupted, 'lables' => $lables];
+        
+        return view('statistics', ['data' => $data]);
     }
 }

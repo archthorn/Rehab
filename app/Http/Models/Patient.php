@@ -14,8 +14,8 @@ class Patient extends Model
         return $this->belongsTo('App\Http\Models\Diagnosis', 'diagnosis_id');
     }
 
-    public function treatment(){
-        return $this->hasOne('App\Http\Models\Treatment', 'patient_id');
+    public function treatments(){
+        return $this->hasMany('App\Http\Models\Treatment', 'patient_id');
     }
 
     public function getFullName(){

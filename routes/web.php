@@ -31,7 +31,9 @@ Route::post('/patients/edit/{id}', 'PatientsController@saveEditedPatient')->name
 Route::get('/courses', 'CoursesController@courses')->name('courses');
 Route::get('/courses/add', 'CoursesController@addCourse')->name('addCourse');
 Route::post('/courses/add', 'CoursesController@saveCourse')->name('saveCourse');
+Route::get('/statistics', 'CoursesController@statistics')->name('statistics');
 
 Route::get('/treatments', 'TreatmentController@treatments')->name('treatments');
 Route::post('/patients/{id}', 'TreatmentController@addTreatment')->name('addTreatment');
 Route::post('/treatments/{id}', 'TreatmentController@updateTreatment')->name('updateTreatment');
+Route::get('/treatments/export/{id}', 'TreatmentController@exportTreatment')->name('exportTreatment');

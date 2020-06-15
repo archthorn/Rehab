@@ -37,6 +37,7 @@
                                     <a class="dropdown-item" href="{{ route('treatments', ['sort' => 'created_at']) }}">Активні курси</a>
                                     <a class="dropdown-item" href="{{ route('patients', ['sort' => 'created_at']) }}">Пацієнти</a>
                                     <a class="dropdown-item" href="{{ route('courses') }}">Курси</a>
+                                    <a class="dropdown-item" href="{{ route('statistics') }}">Статистика</a>
                                     @if(Auth::user()->hasRole('admin'))
                                     <a class="dropdown-item" href="{{ route('users') }}">Користувачі</a>
                                     @endif
